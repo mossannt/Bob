@@ -1,13 +1,24 @@
 extends StaticBody3D
 
-@onready var mesh: MeshInstance3D = $Mesh
+@onready var model: Node3D = $BackpackModel
 @onready var label: Label3D = $Label3D
 
 var nearby: bool = false
+var meshes: Array[MeshInstance3D] = []
+var original_materials: Array[Material] = []
 
 func _ready() -> void:
 	add_to_group("backpack_pickup")
+	_collect_meshes(model)
 	_set_glow(false)
+
+func _collect_meshes(node: Node) -> void:
+	for child in node.get_children():
+		if child is MeshInstance3D:
+			var mesh: MeshInstance3D = child
+			meshes.append(mesh)
+			original_materials.append(mesh.material_override)
+		_collect_meshes(child)
 
 func _process(_delta: float) -> void:
 	var player: Node = get_tree().get_first_node_in_group("player")
@@ -20,12 +31,19 @@ func _process(_delta: float) -> void:
 		_set_glow(nearby)
 
 func _set_glow(enabled: bool) -> void:
-	var material: StandardMaterial3D = mesh.material_override as StandardMaterial3D
-	if material != null:
-		material.emission_enabled = enabled
-		material.emission = Color(0.15, 0.75, 1.0, 1.0)
-		material.emission_energy_multiplier = 1.8 if enabled else 0.0
-	label.modulate = Color(0.65, 0.95, 1.0, 1.0) if enabled else Color(0.35, 0.62, 0.75, 1.0)
+	for index in range(meshes.size()):
+		var mesh: MeshInstance3D = meshes[index]
+		if enabled:
+			var source_material: Material = mesh.get_active_material(0)
+			if source_material is StandardMaterial3D:
+				var glowing_material: StandardMaterial3D = source_material.duplicate() as StandardMaterial3D
+				glowing_material.emission_enabled = true
+				glowing_material.emission = Color(0.08, 0.5, 1.0, 1.0)
+				glowing_material.emission_energy_multiplier = 0.75
+				mesh.material_override = glowing_material
+		else:
+			mesh.material_override = original_materials[index]
+	label.modulate = Color(0.65, 0.95, 1.0, 1.0) if enabled else Color(0.42, 0.68, 0.82, 1.0)
 
 func interact() -> void:
 	var inventory: Node = get_tree().get_first_node_in_group("inventory")
