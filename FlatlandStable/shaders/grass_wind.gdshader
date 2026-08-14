@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode cull_disabled, diffuse_burley;
+render_mode cull_disabled, unshaded;
 
 uniform vec4 grass_color : source_color = vec4(0.16, 0.48, 0.12, 1.0);
 uniform float wind_strength = 0.16;
@@ -13,5 +13,6 @@ void vertex() {
 
 void fragment() {
 	ALBEDO = grass_color.rgb;
-	ROUGHNESS = 0.92;
+	EMISSION = grass_color.rgb * 0.12;
+	ROUGHNESS = 0.9;
 }

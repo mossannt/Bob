@@ -2,7 +2,7 @@ extends StaticBody3D
 
 @export var chunk_size: float = 80.0
 @export var snap_size: float = 20.0
-@export var grass_count: int = 520
+@export var grass_count: int = 900
 
 @onready var player: Node3D = get_parent().get_node("Player")
 @onready var collision: CollisionShape3D = $Collision
@@ -35,9 +35,8 @@ func _create_grass() -> void:
 	multi.transform_format = MultiMesh.TRANSFORM_3D
 	multi.use_custom_data = true
 	multi.instance_count = grass_count
-	var blade: QuadMesh = QuadMesh.new()
-	blade.size = Vector2(0.18, 0.7)
-	blade.orientation = PlaneMesh.FACE_Z
+	var blade: BoxMesh = BoxMesh.new()
+	blade.size = Vector3(0.12, 0.8, 0.12)
 	var shader: Shader = load("res://shaders/grass_wind.gdshader")
 	var material: ShaderMaterial = ShaderMaterial.new()
 	material.shader = shader
