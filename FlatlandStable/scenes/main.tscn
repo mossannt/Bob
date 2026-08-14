@@ -1,5 +1,6 @@
-[gd_scene load_steps=19 format=3]
+[gd_scene load_steps=20 format=3]
 
+[ext_resource type="PackedScene" path="res://assets/Models/Survival.dae" id="4_survival"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
 [ext_resource type="Script" path="res://scripts/joystick.gd" id="2_joystick"]
 [ext_resource type="Script" path="res://scripts/interactable.gd" id="3_interactable"]
@@ -225,5 +226,9 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("2_joystick")
 player_path = NodePath("../../Player")
+
+[node name="SurvivalCampAssets" parent="." instance=ExtResource("4_survival")]
+position = Vector3(0, 0.02, -13)
+scale = Vector3(0.08, 0.08, 0.08)
 
 [connection signal="pressed" from="HUD/UseButton" to="Player" method="interact"]
