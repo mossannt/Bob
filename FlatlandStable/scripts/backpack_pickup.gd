@@ -50,8 +50,8 @@ func _set_glow(enabled: bool) -> void:
 			if source_material is StandardMaterial3D:
 				var glowing_material: StandardMaterial3D = source_material.duplicate() as StandardMaterial3D
 				glowing_material.emission_enabled = true
-				glowing_material.emission = Color(0.08, 0.5, 1.0, 1.0)
-				glowing_material.emission_energy_multiplier = 0.75
+				glowing_material.emission = Color(0.12, 0.38, 0.65, 1.0)
+				glowing_material.emission_energy_multiplier = 0.18
 				mesh.material_override = glowing_material
 		else:
 			mesh.material_override = original_materials[index]
