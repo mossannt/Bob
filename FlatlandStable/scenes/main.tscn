@@ -228,7 +228,7 @@ script = ExtResource("2_joystick")
 player_path = NodePath("../../Player")
 
 [node name="SurvivalCampAssets" parent="." instance=ExtResource("4_survival")]
-position = Vector3(0, 0.02, -13)
-scale = Vector3(0.08, 0.08, 0.08)
+position = Vector3(0, 0.02, -10)
+scale = Vector3(0.75, 0.75, 0.75)
 
 [connection signal="pressed" from="HUD/UseButton" to="Player" method="interact"]
