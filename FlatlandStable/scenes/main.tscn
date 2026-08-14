@@ -1,0 +1,229 @@
+[gd_scene load_steps=19 format=3]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
+[ext_resource type="Script" path="res://scripts/joystick.gd" id="2_joystick"]
+[ext_resource type="Script" path="res://scripts/interactable.gd" id="3_interactable"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMaterial"]
+sky_top_color = Color(0.04, 0.16, 0.36, 1)
+sky_horizon_color = Color(0.48, 0.75, 0.9, 1)
+ground_bottom_color = Color(0.035, 0.055, 0.08, 1)
+ground_horizon_color = Color(0.48, 0.58, 0.62, 1)
+sun_angle_max = 18.0
+sun_curve = 0.08
+energy_multiplier = 0.85
+
+[sub_resource type="Sky" id="Sky"]
+sky_material = SubResource("SkyMaterial")
+
+[sub_resource type="Environment" id="Environment"]
+background_mode = 2
+sky = SubResource("Sky")
+ambient_light_source = 3
+ambient_light_energy = 0.8
+ambient_light_sky_contribution = 0.72
+tonemap_mode = 2
+fog_enabled = true
+fog_light_color = Color(0.48, 0.68, 0.78, 1)
+fog_light_energy = 0.7
+fog_density = 0.006
+fog_sky_affect = 0.75
+
+[sub_resource type="BoxMesh" id="GroundMesh"]
+size = Vector3(80, 0.3, 80)
+
+[sub_resource type="BoxShape3D" id="GroundShape"]
+size = Vector3(80, 0.3, 80)
+
+[sub_resource type="StandardMaterial3D" id="GroundMaterial"]
+albedo_color = Color(0.12, 0.2, 0.28, 1)
+roughness = 0.95
+
+[sub_resource type="CapsuleShape3D" id="PlayerShape"]
+radius = 0.42
+height = 1.9
+
+[sub_resource type="BoxMesh" id="BlockMesh"]
+size = Vector3(3, 2.4, 3)
+
+[sub_resource type="BoxShape3D" id="BlockShape"]
+size = Vector3(3, 2.4, 3)
+
+[sub_resource type="StandardMaterial3D" id="BlockMaterial"]
+albedo_color = Color(0.24, 0.42, 0.82, 1)
+roughness = 0.72
+
+[sub_resource type="CylinderMesh" id="BeaconMesh"]
+top_radius = 0.58
+bottom_radius = 0.78
+height = 2.3
+
+[sub_resource type="CylinderShape3D" id="BeaconShape"]
+radius = 0.75
+height = 2.3
+
+[sub_resource type="StandardMaterial3D" id="BeaconMaterial"]
+albedo_color = Color(0.05, 0.78, 0.58, 1)
+emission_enabled = true
+emission = Color(0.02, 0.3, 0.2, 1)
+emission_energy_multiplier = 1.2
+
+[sub_resource type="StyleBoxFlat" id="ButtonNormal"]
+bg_color = Color(0.08, 0.2, 0.3, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.43, 0.86, 0.95, 1)
+corner_radius_top_left = 48
+corner_radius_top_right = 48
+corner_radius_bottom_right = 48
+corner_radius_bottom_left = 48
+
+[sub_resource type="StyleBoxFlat" id="ButtonPressed"]
+bg_color = Color(0.1, 0.55, 0.45, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.65, 1, 0.88, 1)
+corner_radius_top_left = 48
+corner_radius_top_right = 48
+corner_radius_bottom_right = 48
+corner_radius_bottom_left = 48
+
+[node name="Main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-48, -32, 0)
+light_color = Color(1, 0.94, 0.82, 1)
+light_energy = 1.55
+shadow_enabled = true
+directional_shadow_max_distance = 80.0
+
+[node name="SkyFill" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-20, 150, 0)
+light_color = Color(0.49, 0.72, 0.91, 1)
+light_energy = 0.22
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="Mesh" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("GroundMesh")
+material_override = SubResource("GroundMaterial")
+position = Vector3(0, -0.15, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("GroundShape")
+position = Vector3(0, -0.15, 0)
+
+[node name="Player" type="CharacterBody3D" parent="."]
+position = Vector3(0, 1.05, 5)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("PlayerShape")
+
+[node name="Head" type="Node3D" parent="Player"]
+position = Vector3(0, 0.68, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Player/Head"]
+current = true
+fov = 76.0
+
+[node name="InteractRay" type="RayCast3D" parent="Player/Head/Camera3D"]
+target_position = Vector3(0, 0, -4)
+collision_mask = 1
+
+[node name="Block" type="StaticBody3D" parent="."]
+position = Vector3(-5, 1.2, -8)
+
+[node name="Mesh" type="MeshInstance3D" parent="Block"]
+mesh = SubResource("BlockMesh")
+material_override = SubResource("BlockMaterial")
+
+[node name="Collision" type="CollisionShape3D" parent="Block"]
+shape = SubResource("BlockShape")
+
+[node name="Beacon" type="StaticBody3D" parent="."]
+position = Vector3(0, 1.15, -6)
+script = ExtResource("3_interactable")
+
+[node name="Mesh" type="MeshInstance3D" parent="Beacon"]
+mesh = SubResource("BeaconMesh")
+material_override = SubResource("BeaconMaterial")
+
+[node name="Collision" type="CollisionShape3D" parent="Beacon"]
+shape = SubResource("BeaconShape")
+
+[node name="Lamp" type="OmniLight3D" parent="Beacon"]
+light_color = Color(0.15, 1, 0.72, 1)
+light_energy = 1.5
+omni_range = 5.0
+position = Vector3(0, 1.2, 0)
+
+[node name="Label3D" type="Label3D" parent="Beacon"]
+text = "PRESS E"
+font_size = 42
+outline_size = 10
+modulate = Color(0.65, 0.9, 1, 1)
+position = Vector3(0, 1.8, 0)
+billboard = 1
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Title" type="Label" parent="HUD"]
+offset_left = 32.0
+offset_top = 26.0
+offset_right = 460.0
+offset_bottom = 58.0
+theme_override_colors/font_color = Color(0.83, 0.93, 1, 1)
+theme_override_font_sizes/font_size = 23
+text = "FLATLAND // MOBILE FPS"
+
+[node name="Hint" type="Label" parent="HUD"]
+offset_left = 34.0
+offset_top = 60.0
+offset_right = 600.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.48, 0.65, 0.75, 1)
+theme_override_font_sizes/font_size = 14
+text = "LEFT: MOVE     RIGHT: LOOK     E: INTERACT"
+
+[node name="Crosshair" type="Label" parent="HUD"]
+offset_left = 634.0
+offset_top = 337.0
+offset_right = 650.0
+offset_bottom = 370.0
+theme_override_colors/font_color = Color(0.85, 0.96, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "+"
+
+[node name="UseButton" type="Button" parent="HUD"]
+offset_left = 1120.0
+offset_top = 540.0
+offset_right = 1245.0
+offset_bottom = 665.0
+theme_override_colors/font_color = Color(0.9, 0.98, 1, 1)
+theme_override_font_sizes/font_size = 21
+theme_override_styles/normal = SubResource("ButtonNormal")
+theme_override_styles/pressed = SubResource("ButtonPressed")
+text = "E\nUSE"
+
+[node name="Joystick" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_joystick")
+player_path = NodePath("../../Player")
+
+[connection signal="pressed" from="HUD/UseButton" to="Player" method="interact"]
