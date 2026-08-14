@@ -23,3 +23,7 @@
 ## الأرض والعشب
 
 الأرض الآن نظام متحرك يتبع اللاعب على شبكة chunks، لذلك تبدو لا نهائية أثناء اللعب. لون الأرض أخضر، ويوجد عشب مجسم خفيف يتحرك مع الرياح بواسطة shader، وينتقل مع الأرض عندما يبتعد اللاعب.
+
+## Enhanced wind and grass
+
+The prototype now includes an original looping wind-and-grass ambience at a low mix level, plus two layers of animated grass: broad blades and finer blades with different wind speeds and strengths. The two layers are generated with MultiMesh for mobile performance and follow the player with the terrain chunk.
