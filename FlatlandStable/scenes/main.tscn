@@ -1,6 +1,6 @@
-[gd_scene load_steps=36 format=3]
+[gd_scene load_steps=35 format=3]
 
-[ext_resource type="PackedScene" path="res://assets/Models/SurvivalNoBackpack.dae" id="4_survival"]
+[ext_resource type="PackedScene" path="res://assets/Models/Survival.dae" id="4_survival"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
 [ext_resource type="Script" path="res://scripts/joystick.gd" id="2_joystick"]
 [ext_resource type="Script" path="res://scripts/interactable.gd" id="3_interactable"]
@@ -12,7 +12,6 @@
 [ext_resource type="Shader" path="res://shaders/grass_wind.gdshader" id="10_grass"]
 [ext_resource type="Script" path="res://scripts/portal.gd" id="11_portal"]
 [ext_resource type="Script" path="res://scripts/world_controller.gd" id="12_world"]
-[ext_resource type="AudioStream" path="res://audio/wind_grass_ambience.wav" id="13_wind_audio"]
 [ext_resource type="Script" path="res://scripts/wind_audio.gd" id="14_wind_player"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMaterial"]
@@ -133,7 +132,6 @@ script = ExtResource("12_world")
 environment = SubResource("Environment")
 
 [node name="WindAmbience" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("13_wind_audio")
 volume_db = -9.0
 autoplay = true
 script = ExtResource("14_wind_player")

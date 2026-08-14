@@ -5,6 +5,8 @@ var restarting: bool = false
 
 func _ready() -> void:
 	finished.connect(_on_finished)
+	if stream == null:
+		stream = load("res://audio/wind_grass_ambience.wav") as AudioStream
 	if stream != null:
 		play()
 

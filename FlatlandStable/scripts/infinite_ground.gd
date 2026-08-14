@@ -2,7 +2,7 @@ extends StaticBody3D
 
 @export var chunk_size: float = 80.0
 @export var snap_size: float = 20.0
-@export var grass_count: int = 900
+@export var grass_count: int = 1400
 
 @onready var player: Node3D = get_parent().get_node("Player")
 @onready var collision: CollisionShape3D = $Collision
@@ -37,7 +37,7 @@ func _create_grass() -> void:
 	multi.use_custom_data = true
 	multi.instance_count = grass_count
 	var blade: BoxMesh = BoxMesh.new()
-	blade.size = Vector3(0.12, 0.8, 0.12)
+	blade.size = Vector3(0.13, 1.0, 0.13)
 	var shader: Shader = load("res://shaders/grass_wind.gdshader")
 	var material: ShaderMaterial = ShaderMaterial.new()
 	material.shader = shader
@@ -58,7 +58,7 @@ func _create_grass() -> void:
 		multi.set_instance_custom(index, Color(rng.randf(), 0.0, 0.0, 1.0))
 	grass.multimesh = multi
 	add_child(grass)
-	fine_grass = _create_grass_layer("FineWindGrass", 620, Vector3(0.07, 0.48, 0.07), Color(0.28, 0.68, 0.14, 1.0), 88411)
+	fine_grass = _create_grass_layer("FineWindGrass", 900, Vector3(0.075, 0.56, 0.075), Color(0.28, 0.68, 0.14, 1.0), 88411)
 	add_child(fine_grass)
 
 func _create_grass_layer(layer_name: String, count: int, blade_size: Vector3, color: Color, seed_value: int) -> MultiMeshInstance3D:
