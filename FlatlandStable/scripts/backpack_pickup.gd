@@ -9,12 +9,24 @@ var original_materials: Array[Material] = []
 
 func _ready() -> void:
 	add_to_group("backpack_pickup")
+	_filter_to_backpack(model)
 	_collect_meshes(model)
 	_set_glow(false)
 
+func _filter_to_backpack(node: Node) -> bool:
+	var keep: bool = node.name.to_lower().contains("backpack")
+	for child in node.get_children():
+		var child_keep: bool = _filter_to_backpack(child)
+		if child is Node3D and not child_keep and child.get_child_count() == 0:
+			child.visible = false
+		keep = keep or child_keep
+	if node is Node3D and not keep and node != model:
+		node.visible = false
+	return keep
+
 func _collect_meshes(node: Node) -> void:
 	for child in node.get_children():
-		if child is MeshInstance3D:
+		if child is MeshInstance3D and child.visible:
 			var mesh: MeshInstance3D = child
 			meshes.append(mesh)
 			original_materials.append(mesh.material_override)

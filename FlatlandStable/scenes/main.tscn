@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://scripts/interactable.gd" id="3_interactable"]
 [ext_resource type="Script" path="res://scripts/inventory.gd" id="5_inventory"]
 [ext_resource type="Script" path="res://scripts/backpack_pickup.gd" id="6_backpack"]
-[ext_resource type="PackedScene" path="res://assets/Models/BackpackOnly.dae" id="7_backpack_model"]
+[ext_resource type="PackedScene" path="res://assets/Models/Survival.dae" id="7_backpack_model"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMaterial"]
 sky_top_color = Color(0.04, 0.16, 0.36, 1)
