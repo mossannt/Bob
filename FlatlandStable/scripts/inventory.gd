@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 var items: Array[String] = ["", "", "", "", "", "", "", "", "", ""]
+var bag_button: Button
 var quickbar: HBoxContainer
 var inventory_panel: Panel
 var inventory_grid: GridContainer
@@ -16,6 +17,8 @@ func add_item(item_name: String) -> bool:
 	for index in range(items.size()):
 		if items[index] == "":
 			items[index] = item_name
+			if bag_button != null:
+				bag_button.visible = true
 			_refresh_slots()
 			show_message("BACKPACK COLLECTED")
 			return true
@@ -48,7 +51,7 @@ func _build_quickbar() -> void:
 	message.add_theme_font_size_override("font_size", 16)
 	message.add_theme_color_override("font_color", Color(0.7, 1.0, 0.85))
 	add_child(message)
-	var bag_button: Button = Button.new()
+	bag_button = Button.new()
 	bag_button.name = "BagButton"
 	bag_button.text = "BAG"
 	bag_button.position = Vector2(1115, 28)
@@ -56,6 +59,7 @@ func _build_quickbar() -> void:
 	bag_button.add_theme_font_size_override("font_size", 18)
 	bag_button.add_theme_color_override("font_color", Color(0.88, 0.98, 1.0))
 	bag_button.pressed.connect(_toggle_inventory)
+	bag_button.visible = false
 	add_child(bag_button)
 
 func _build_inventory_panel() -> void:

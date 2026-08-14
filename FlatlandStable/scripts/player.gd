@@ -12,6 +12,9 @@ var pitch: float = 0.0
 var touch_id: int = -1
 var last_touch: Vector2 = Vector2.ZERO
 
+func _ready() -> void:
+	add_to_group("player")
+
 func _physics_process(delta: float) -> void:
 	var keyboard: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var input_vector: Vector2 = keyboard
