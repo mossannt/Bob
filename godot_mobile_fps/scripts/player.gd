@@ -52,7 +52,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif not event.pressed and event.index == look_touch_id:
 			look_touch_id = -1
 	elif event is InputEventScreenDrag and event.index == look_touch_id:
-		var delta := event.position - last_look_position
+		var delta: Vector2 = event.position - last_look_position
 		last_look_position = event.position
 		rotate_y(-delta.x * look_sensitivity)
 		pitch = clamp(pitch - delta.y * look_sensitivity, deg_to_rad(-78.0), deg_to_rad(78.0))
@@ -70,7 +70,7 @@ func clear_move_input() -> void:
 
 func interact() -> void:
 	if interact_ray.is_colliding():
-		var target := interact_ray.get_collider()
+		var target: Node = interact_ray.get_collider() as Node
 		if target.has_method("interact"):
 			target.interact()
 			interaction_message = "Interaction complete"
@@ -79,6 +79,6 @@ func interact() -> void:
 	else:
 		interaction_message = "Look at an object first"
 	message_timer = 2.0
-	var hud := get_tree().get_first_node_in_group("hud")
+	var hud: Node = get_tree().get_first_node_in_group("hud")
 	if hud and hud.has_method("show_message"):
 		hud.show_message(interaction_message)
