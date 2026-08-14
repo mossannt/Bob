@@ -1,3 +1,4 @@
+@tool
 extends Node3D
 
 var player: MobileFPSPlayer
@@ -7,6 +8,8 @@ var joystick: VirtualJoystick
 var beacon: InteractableProp
 
 func _ready() -> void:
+	if get_node_or_null("WorldEnvironment") != null:
+		return
 	_build_environment()
 	_build_ground()
 	_build_props()
@@ -15,21 +18,46 @@ func _ready() -> void:
 
 func _build_environment() -> void:
 	var environment := Environment.new()
-	environment.background_mode = Environment.BG_COLOR
-	environment.background_color = Color("#111a2b")
-	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	environment.ambient_light_color = Color("#9bb9d8")
-	environment.ambient_light_energy = 0.55
+	environment.background_mode = Environment.BG_SKY
+	var sky := Sky.new()
+	var sky_material := ProceduralSkyMaterial.new()
+	sky_material.sky_top_color = Color("#12335f")
+	sky_material.sky_horizon_color = Color("#8fc5e8")
+	sky_material.ground_bottom_color = Color("#172331")
+	sky_material.ground_horizon_color = Color("#b8c8c7")
+	sky_material.sun_angle_max = 18.0
+	sky_material.sun_curve = 0.08
+	sky_material.energy_multiplier = 0.85
+	sky.sky_material = sky_material
+	environment.sky = sky
+	environment.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
+	environment.ambient_light_energy = 0.8
+	environment.ambient_light_sky_contribution = 0.72
 	environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	environment.fog_enabled = true
+	environment.fog_light_color = Color("#a4c4d6")
+	environment.fog_light_energy = 0.7
+	environment.fog_density = 0.006
+	environment.fog_sky_affect = 0.75
 	var world_environment := WorldEnvironment.new()
+	world_environment.name = "WorldEnvironment"
 	world_environment.environment = environment
 	add_child(world_environment)
 	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-52.0, -28.0, 0.0)
-	sun.light_color = Color("#dbe9ff")
-	sun.light_energy = 1.35
+	sun.name = "SunLight"
+	sun.rotation_degrees = Vector3(-48.0, -32.0, 0.0)
+	sun.light_color = Color("#fff1d0")
+	sun.light_energy = 1.55
 	sun.shadow_enabled = true
+	sun.directional_shadow_max_distance = 80.0
 	add_child(sun)
+	var fill := DirectionalLight3D.new()
+	fill.name = "SkyFill"
+	fill.rotation_degrees = Vector3(-20.0, 150.0, 0.0)
+	fill.light_color = Color("#7db8e8")
+	fill.light_energy = 0.22
+	fill.shadow_enabled = false
+	add_child(fill)
 
 func _build_ground() -> void:
 	var ground := StaticBody3D.new()
