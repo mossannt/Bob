@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3]
+[gd_scene load_steps=28 format=3]
 
 [ext_resource type="PackedScene" path="res://assets/Models/Survival.dae" id="4_survival"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
@@ -8,6 +8,8 @@
 [ext_resource type="Script" path="res://scripts/backpack_pickup.gd" id="6_backpack"]
 [ext_resource type="PackedScene" path="res://assets/Models/Survival.dae" id="7_backpack_model"]
 [ext_resource type="Script" path="res://scripts/survival_collection.gd" id="8_collection"]
+[ext_resource type="Script" path="res://scripts/infinite_ground.gd" id="9_ground"]
+[ext_resource type="Shader" path="res://shaders/grass_wind.gdshader" id="10_grass"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMaterial"]
 sky_top_color = Color(0.04, 0.16, 0.36, 1)
@@ -41,7 +43,7 @@ size = Vector3(80, 0.3, 80)
 size = Vector3(80, 0.3, 80)
 
 [sub_resource type="StandardMaterial3D" id="GroundMaterial"]
-albedo_color = Color(0.12, 0.2, 0.28, 1)
+albedo_color = Color(0.16, 0.34, 0.12, 1)
 roughness = 0.95
 
 [sub_resource type="CapsuleShape3D" id="PlayerShape"]
@@ -125,6 +127,7 @@ light_color = Color(0.49, 0.72, 0.91, 1)
 light_energy = 0.22
 
 [node name="Ground" type="StaticBody3D" parent="."]
+script = ExtResource("9_ground")
 
 [node name="Mesh" type="MeshInstance3D" parent="Ground"]
 mesh = SubResource("GroundMesh")
